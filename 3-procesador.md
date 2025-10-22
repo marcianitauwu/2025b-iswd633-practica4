@@ -11,7 +11,18 @@ Asignar núcleos de CPU específicos:
 
 **¿Como saber el numero de procesadores virtuales que tiene una máquina?**
 ## COMPLETAR
+```
+nproc
+```
+para un entorno más estándar
+```
+grep -c ^processor /proc/cpuinfo
+```
 
+Ejemplo para ejecutarlo
+```
+docker run --rm <imagen_base>  nproc
+```
 ## Ejemplos
 _Puedes copiar y ejecutar directamente cada uno de los comandos_
 
