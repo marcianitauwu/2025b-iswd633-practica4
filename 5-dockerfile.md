@@ -52,18 +52,25 @@ docker build -t <nombre imagen>:<tag> .
  
 ### Ejecutar el archivo Dockerfile y construir una imagen en la versión 1.0
 No olvides verificar en qué directorio se encuentra el archivo Dockerfile
-```
-
-```
 
 **¿Cuántos pasos se han ejecutado?**
 # RESPONDER 
-
+3 pasos se han ejecutado.
+- FROM httpd:alpine
+- COPY ./index.html /usr/local/apache2/htdocs/index.html
+- CMD ["apachectl", "-D", "FOREGROUND"]
+Cada instrucción en un Dockerfile se ejecuta como un paso durante el proceso de construcción.
 ### Inspeccionar la imagen creada
 # COMPLETAR CON UNA CAPTURA
+```
+docker image inspect apache-samira:1.0
+```
+<img width="996" height="1352" alt="image" src="https://github.com/user-attachments/assets/6e5accbf-0d6f-4404-ad5e-686048274278" />
+
 
 **Modificar el archivo index.html para incluir su nombre y luego crear una nueva versión de la imagen anterior**
 **¿Cuántos pasos se han ejecutado? ¿Observa algo diferente en la creación de la imagen**
+Nuevamente 3 pasos, si se obseerva diferente ya que Docker reutiliza las capas anteriores gracias al mecanismo de caché, excepto la capa COPY, que se vuelve a ejecutar porque el archivo cambió.
 
 ## Mecanismo de caché
 Docker usa un mecanismo de caché cuando crea imágenes para acelerar el proceso de construcción y evitar la repetición de pasos que no han cambiado. Cada instrucción en un Dockerfile crea una capa en la imagen final. Docker intenta reutilizar las capas de una construcción anterior si no han cambiado, lo que reduce significativamente el tiempo de construcción.
@@ -75,14 +82,16 @@ Docker usa un mecanismo de caché cuando crea imágenes para acelerar el proceso
 
 ### Crear un contenedor a partir de las imagen creada, mapear todos los puertos
 ```
-
+docker run -d -p 8080:80 mi-apache:2.0
 ```
 
 ### ¿Con que puerto host se está realizando el mapeo?
 # COMPLETAR CON LA RESPUESTA
+El puerto 8080 del host se está mapeando al puerto 80 del contenedor. Esto significa que puedes acceder a la aplicación web que corre dentro del contenedor desde el navegador en [localhost:8080](https://localhost:8080./).
 
 **¿Qué es una imagen huérfana?**
 # COMPLETAR CON LA RESPUESTA
+Una imagen huérfana (también llamada dangling image) es una imagen de Docker que no tiene una etiqueta (none) y no está asociada a ningún contenedor. Estas imágenes suelen generarse cuando se reconstruye una imagen y las versiones anteriores quedan sin referencia. Aunque ocupan espacio en disco, no se utilizan y pueden eliminarse de forma segura.
 
 ### Identificar imágenes huérfanas
 ```
